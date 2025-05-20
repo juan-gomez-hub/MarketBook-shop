@@ -2,12 +2,5 @@ __pycache__/
 .env
 !.env.example
 rest
-# <<<<<<< HEAD
-# <<<<<<< HEAD
 # uploads/*
-# =======
-# **/uploads/*
-# >>>>>>> d09fd19 (fix de gitignore)
-# =======
-# **/uploads/*
-# >>>>>>> d09fd191cdd56167c9b355ed97a1bccab642aa98
+**/uploads/*
