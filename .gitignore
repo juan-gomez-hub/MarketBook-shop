@@ -2,4 +2,8 @@ __pycache__/
 .env
 !.env.example
 rest
+<<<<<<< HEAD
 uploads/*
+=======
+**/uploads/*
+>>>>>>> d09fd19 (fix de gitignore)
