@@ -20,7 +20,7 @@ TOKEN_DURATION=int(env("TOKEN_DURATION"))
 def createToken(content,secret_key):
     payload={}
     payload.update(content)
-    payload.update({'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=TOKEN_DURATION)})
+    payload.update({'exp': datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=TOKEN_DURATION)})
     token = jwt.encode(payload, secret_key, algorithm='HS256')
     return token
 

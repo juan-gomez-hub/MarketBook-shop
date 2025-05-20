@@ -1,7 +1,10 @@
 # test_app.py
+from faker import Faker
 import pytest
 from time import sleep
+# from test.conftest import client
 
+@pytest.fixture
 def test_login_correct(client, user="test2005", password="123456Test",email="teste1@hotmail.com"):
     client.post('/api/accountManager/register', json={
         "user": user,
@@ -13,6 +16,29 @@ def test_login_correct(client, user="test2005", password="123456Test",email="tes
     assert b"success" in responseBin.data
     token = responseBin.json.get("success", {}).get("token")
     assert token is not None
+    return token
+
+
+@pytest.fixture
+def test_login_correct_random(client):
+    fake=Faker()
+    user=fake.bothify(text="????####").capitalize()
+    email=((fake.bothify(text="?????").capitalize())+"@hotmail.com")
+    password=fake.bothify(text="????####").capitalize()
+    creacion=client.post('/api/accountManager/register', json={
+        "user": user,
+        "email": email,
+        "password": password
+    }).data
+    print(f"email es {email}")
+    assert b"success" in creacion
+    responseBin = client.post('/api/accountManager/login',
+                           json={"user": user,"password":password})
+    assert b"success" in responseBin.data
+    token = responseBin.json.get("success", {}).get("token")
+    assert token is not None
+    return token
+
 
 
 def test_user_incorrect(client, user="UsuarioIncorrect", password="Messias."):

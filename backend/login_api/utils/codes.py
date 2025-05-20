@@ -7,3 +7,4 @@ code=1003
 
 #
 ErrorToGenerationCode=2000
+ErrorToGenerationToken=2001

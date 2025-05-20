@@ -62,14 +62,17 @@ async def generateCode():
     return False
 
 #cambia el password(se ejecuta al final de todo)
-@forgotAccount.get('/changePass')
+@forgotAccount.post('/changePass')
 async def changePass():
     try:
         data=request.get_json()
+        if not(isinstance(data["code"],int)):
+            return{"Error":"El codigo debe ser numerico"},400
         code, email, password = int(data['code']), str(data['email']), str(data['password'])
         await validate(fieldCode=code,fieldEmail=email,fieldPassword=password)
         if(not await User.getCode(code,email)):
-            return{'error':'El codigo ingresado es invalido o a caducado'},401
+            # return{'error':'El codigo ingresado es invalido o a caducado'},401
+            return Errors('El codigo ingresado es invalido o a caducado',codes.code),401
         User.changePass(password,email)
         return Success("Contraseña modificada exitosamente")
     except KeyError:

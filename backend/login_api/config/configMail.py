@@ -13,3 +13,6 @@ class ConfigMail(object):
     MAIL_DEBUG=False
     MAIL_USERNAME=env("MAIL_USERNAME")
     MAIL_PASSWORD=env("MAIL_PASSWORD")
+    MAIL_DEFAULT_SENDER = env("MAIL_USERNAME")
+
+

@@ -19,17 +19,14 @@ def validatePass(password):
         return False
     if(len(password)<4 or len(password)>18):
       return False
-    for letra in password:
-      if(letra.isupper()):
-            return True
-      
+    return True  
+
 def validateUser(user):
     if(not isinstance(user,str)):
         return False
-    # Define el patrón de expresión regular para una dirección de correo electrónico
-    patron = r'^[\w\.-]+$'
     if(len(user)<4 or len(user)>18):
         return False
+    patron = r'^[\w\.-]+$'
     # Utiliza la función search de la biblioteca re para buscar coincidencias
     if re.search(patron, user):
         return True

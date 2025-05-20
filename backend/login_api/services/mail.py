@@ -13,5 +13,5 @@ def enviar_correo(destinatary,asunto, message):
             mail.send(msg)
             return True
         except Exception as e:
-            # print(f"Error al enviar el correo: {e}")  # También puedes usar logging
+            print(f"Error al enviar el correo: {e}")  # También puedes usar logging
             return False

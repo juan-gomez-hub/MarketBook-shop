@@ -1,10 +1,12 @@
 from flask import Blueprint, request
 from login_api.middlewares.middleAuth import checkAuth, createToken
-from login_api.models.modelsORM import blackList
+from login_api.models.modelsORM import User, blackList
 from login_api.utils.managerResponse import Success
 import jwt
 from dotenv import load_dotenv,dotenv_values
 import os
+
+from models.modelORM import Authors
 
 load_dotenv()
 
@@ -27,12 +29,23 @@ async def logOut(data):
     blackList.addTokenToBlackList(authorization)
     return{"sucessfully":"desconectado correctamente"}
 
+@tokenApp.route("/prueba")
+def prueba():
+    return {"asd":"asdgf"}
+
 @tokenApp.post("/refreshToken")
 @checkAuth
 async def refreshToken(data):
     try:
-        result=request.headers["Authorization"]
-        #blackList.addTokenToBlackList(result)
+        # result=request.headers["Authorization"]
+        # blackList.addTokenToBlackList(result)
+        userInDB = User.selectUserById(data["id"])
+        if not userInDB:
+            raise 500
+        # if userInDB.role == 1:
+        #     infoInDB = Authors.selectAuthorInfo(1)
+        # else:
+        #     infoInDB = False
         token=createToken({'userID':data["id"], 'role':data["role"]},SECRET_KEY)
         return {"token":token}
     except Exception as e:

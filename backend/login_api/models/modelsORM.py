@@ -29,7 +29,22 @@ class User(db.Model):
     @classmethod
     def selectUserByName(cls,userName=None)-> Optional['User']:
         return (cls.query.filter_by(user=userName).first())
-    
+
+    @classmethod
+    def selectUserById(cls,id=None)-> Optional['User']:
+        return (cls.query.filter_by(_id=id).first())
+
+    # @classmethod
+    # def selectUserById(id=None)-> Optional['User']:
+    #     return (User.query.filter_by(_id=id).first())
+
+    # @classmethod
+    def changeRole(id,roleToChange):
+       User.query.filter_by(_id=id).update({
+            User.role:roleToChange
+        })
+       print(f"accaaaa xd id:{id} role:{roleToChange}")
+       db.session.commit()
     
     @classmethod
     def selectUserByEmail(cls,email=None)-> Optional['User']:
@@ -90,7 +105,7 @@ class User(db.Model):
 class blackList(db.Model):
     __tablename__ = "LA_BLACKLIST"
     _id = db.Column(db.Integer(), primary_key=True)
-    token = db.Column(db.String(132), nullable=False, unique=True)
+    token = db.Column(db.String(200), nullable=False, unique=True)
 
     @classmethod
     def tokenOnBlacklist(cls,token):
