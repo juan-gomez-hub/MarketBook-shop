@@ -1,5 +1,5 @@
 from faker import Faker
-def test_login_correct_random(client, userParam=False):
+def login_correct_random(client, userParam=False):
     fake = Faker()
     user = fake.bothify(text="????####").capitalize() if not userParam else userParam
     email = (fake.bothify(text="?????").capitalize()) + "@hotmail.com"
@@ -9,7 +9,7 @@ def test_login_correct_random(client, userParam=False):
         "/api/accountManager/register",
         json={"user": user, "email": email, "password": password},
     ).data
-    print(f"email es {email}")
+    # print(f"email es {email}")
     assert b"success" in creacion
     responseBin = client.post(
         "/api/accountManager/login", json={"user": user, "password": password}

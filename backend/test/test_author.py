@@ -1,8 +1,8 @@
-from test.helpers.user_helpers import test_login_correct_random
+from test.helpers.user_helpers import login_correct_random
 
 
-def test_makeme_author(client, authorParam=None):
-    token = test_login_correct_random(client)
+def makeme_author(client, authorParam=None):
+    token = login_correct_random(client)
     responseBin = client.post(
         "/market/makeme/author",
         headers={"Authorization": token},
