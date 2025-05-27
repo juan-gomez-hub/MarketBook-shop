@@ -16,8 +16,20 @@ from werkzeug.datastructures import auth
 from werkzeug.utils import secure_filename
 from collections import Counter
 
+# from login_api.models.modelsORM import User
 from . import db
 import uuid
+
+# db = SQLAlchemy()
+# def create_file():
+#     if "file" not in request.files:
+#         return "No file part"
+#
+#     file = request.files["file"]
+#     if file.filename == "":
+#         return "No selected file"
+#     filename = secure_filename(file.filename)
+#     file.save(filepath)
 
 
 class Images(db.Model):
@@ -58,40 +70,78 @@ class Book(db.Model):
     uuid = db.Column(
         String(36), primary_key=True, unique=True, default=lambda: str(uuid.uuid4())
     )
-    # books = db.relationship("Book", backref="author", cascade="all, delete", passive_deletes=True)
+    books = db.relationship("Book", backref="author", cascade="all, delete", passive_deletes=True)
+
 
     @classmethod
-    def listBook(cls, page, per_page):
-        if not page or page <= 0:
-            return false
-        offset = (page - 1) * per_page
-        total_books = db.session.query(Book).join(Book.author).count()
-        books = (
-            db.session.query(Book)
-            .join(Book.author)
-            .order_by(Book.title.asc())
-            .offset(offset)
-            .limit(per_page)
-            .all()
-        )
-        if not books:
-            return False
-        return {
-            "total_books": total_books,
-            "per_page":per_page,
-            "books": [book.to_dict_public() for book in books],
-        }
+    def listBook(cls, numToShow, page):
+        query = """
+    SELECT MS_BOOK.title, MS_BOOK.description, MS_BOOK.release_date, MS_BOOK.price,MS_BOOK.cover_image,MS_AUTHOR.name, MS_BOOK.uuid FROM MS_BOOK
+    JOIN MS_AUTHOR ON MS_AUTHOR._id = MS_BOOK.author_id
+    """
+        result = db.session.execute(db.text(query))
+        for row in result.mappings():
+            print(dict(row)+"\n")  # <-- ahora sí, esto funciona bien
+        # print(result[0].author.name)
+        # for row in result:
+            # print(row)  # row es un objeto tipo Row
+            # print(row.title)  # puedes acceder a los campos como atributos
+            # print(row.name)   # el nombre del autor
+        # return [book.to_dict_public() for book in books]
+        # valor = [
+        #     {
+        #         "title": row[0],
+        #         "description": row[1],
+        #         "release_date": row[2].strftime("%Y-%m-%d"),
+        #         "price": row[3],
+        #         "cover_image": (
+        #             f"http://localhost:5000/market/upload/{row[4]}" if row[4] else None
+        #         ),
+        #         "author": row[5],
+        #         "reference": row[6],
+        #     }
+        #     for row in result
+        # ]
+        # return valor
+
+
 
     @classmethod
     def listYourBook(cls, id):
-        author_id = Authors.getAuthor_id(id)
-        your_books = (
-            db.session.query(Book)
-            .join(Book.author)
-            .filter(Book.author_id == author_id)
-            .all()
-        )
-        return [book.to_dict_public() for book in your_books]
+        #     query = """
+        # SELECT MS_BOOK.title, MS_BOOK.description, MS_BOOK.release_date, MS_BOOK.price,MS_BOOK.cover_image, LA_ACCOUNTS.user, MS_BOOK.uuid FROM MS_BOOK
+        # WHERE MS_BOOK.author_id= :id
+        # """
+        query = """SELECT 
+    MS_BOOK.title, 
+    MS_BOOK.description, 
+    MS_BOOK.release_date, 
+    MS_BOOK.price,
+    MS_BOOK.cover_image, 
+    LA_ACCOUNTS.user, 
+    MS_BOOK.uuid 
+FROM MS_BOOK
+JOIN MS_AUTHOR ON MS_AUTHOR._id = MS_BOOK.author_id
+JOIN LA_ACCOUNTS ON LA_ACCOUNTS._id = MS_AUTHOR.account_id
+WHERE MS_AUTHOR.account_id = :id
+
+"""
+        result = db.session.execute(db.text(query), {"id": id})
+        valor = [
+            {
+                "title": row[0],
+                "description": row[1],
+                "release_date": row[2].strftime("%Y-%m-%d"),
+                "price": row[3],
+                "cover_image": (
+                    f"http://localhost:5000/market/upload/{row[4]}" if row[4] else None
+                ),
+                "author": row[5],
+                "reference": row[6],
+            }
+            for row in result
+        ]
+        return valor
 
     def to_dict_public(self):
         return {
@@ -199,6 +249,17 @@ class Book(db.Model):
 
         db.session.add(nuevo_libro)
         db.session.commit()
+        # fecha_convertida = datetime.strptime(release_dateParam, "%Y-%m-%d").date()
+        # local = Book(
+        #     title=titleParam,
+        #     description=descriptionParam,
+        #     release_date=fecha_convertida,
+        #     author_id=author_idParam,
+        #     cover_image=cover_imageParam,
+        #     price=priceParam,
+        # )
+        # db.session.add(local)
+        # db.session.commit()
 
     @classmethod
     def deleteBook(cls, authorParam):
@@ -219,9 +280,6 @@ class Authors(db.Model):
         unique=True,
         nullable=False,
     )
-    books = db.relationship(
-        "Book", backref="author", cascade="all, delete", passive_deletes=True
-    )
 
     # @classmethod
     def __init__(self, name, biography, account_id, image=None):
@@ -230,11 +288,6 @@ class Authors(db.Model):
         self.account_id = account_id
         if image is not None:
             self.image = image
-
-    @classmethod
-    def getAuthor_id(cls, account_id):
-        result = cls.query.filter(cls.account_id == account_id).first()
-        return result._id
 
     @classmethod
     def create_author(cls, name, biography, account_id, image=None):

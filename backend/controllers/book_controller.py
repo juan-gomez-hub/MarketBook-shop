@@ -79,13 +79,18 @@ async def prueba(data):
             return {"Error": "Error interno en el servidor"}, 500
 
 
-@book.get("/list/book")
-async def list_book():
+@book.get("/list/book/<page>")
+async def list_book(page):
     try:
-        listed = Book.listBook(30)
-        # print(f"asd es: {asd}")
-        # usuarios_dict=[book.to_dict() for book in asd]
+        page=int(page)
+        if page<1:
+            return {"Error":"Pagina invalida"},404
+        listed = Book.listBook(page,20)
+        if not listed:
+            return {"Error":"Pagina invalida"},404
         return {"Success": listed}
+    except TypeError as e:
+        return {"Error":"Pagina invalida"},404
     except Exception as error:
         print(error)
         return {"Error": "Error interno en el servidor"}, 500
@@ -128,6 +133,7 @@ async def get_your_book(data):
         reference = json.get("reference")
         if not reference:
             return {"error": "Error al obtener el libro"}, 400
+        print("sdsdf")
         your_book = Book.getYourBook(data["id"], reference)
         if not your_book:
             return {"error": "el libro no le corresponde a usted"}
@@ -180,45 +186,3 @@ async def modify_your_book(data):
         return {"error": "error interno en el servidor"}, 500
 
 
-# @book.get("/upload/<path:filename>")
-# async def images(filename):
-#     try:
-#         return send_from_directory("uploads", filename)
-#     except:
-#         return {"Error": "Error interno en el servidor"}, 500
-#
-# @book.route("/upload-cover", methods=["POST"])
-# @checkAuth
-# async def upload(l):
-#     if "file" not in request.files:
-#         return {"Error": "Falta el parametro file"}
-#     file = request.files["file"]
-#     if file.filename == "":
-#         return {"Error": "file invalid"}
-#     extension = file.filename.rsplit(".", 1)[1].lower()
-#     name = f"{uuid.uuid1()}.{extension}"
-#     fileFinal = f"uploads/{name}"
-#     file.save(fileFinal)
-#     Images.loadImage(name)
-#     return {
-#         "success": f"archivo {file.filename} subido correctamente",
-#         "filename": name,
-#     }
-
-
-# def save_image(image_path=None):
-#
-#     filename = os.path.basename(image_path)
-#     UPLOAD_FOLDER = env
-#     destination_path = os.path.join(UPLOAD_FOLDER, filename)
-#
-#     print(f"el destination es :{destination_path}")
-#     try:
-#         if not os.path.exists(UPLOAD_FOLDER):
-#             os.mkdir(UPLOAD_FOLDER)
-#         shutil.copy(image_path, destination_path)  # Copiar imagen
-#         print(f"Imagen guardada en {destination_path}")
-#         return destination_path
-#     except Exception as e:
-#         print(f"error {str(e)}")
-#         return False
