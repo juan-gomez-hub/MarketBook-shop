@@ -3,7 +3,7 @@
 ```bash
 # Clona el repositorio
 git clone https://github.com/usuario/proyecto.git
-cd proyecto
+cd proyecto```
 
 
 ## 🚀 Ejecutar backend
