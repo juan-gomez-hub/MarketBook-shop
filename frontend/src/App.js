@@ -21,7 +21,7 @@ const PrivateRoute = ({ children, roleRequired }) => {
     return <Navigate to="/" />
   }
   if (roleRequired != null) {
-    console.log(userRole,roleRequired,isLogged)
+    console.log(userRole, roleRequired, isLogged)
     if (userRole >= roleRequired && isLogged) {
       return children
     } else {
@@ -38,12 +38,13 @@ function CustomRouter() {
   return (
     <Routes>
       <Route path="/" element={<Home />}>
-        <Route path='/' element={<Market />}></Route>
+        <Route path="/" element={<Navigate to="/1" replace />} />
+        <Route path='/:page' element={<Market />}></Route>
         <Route path='/makeme/author' element={toUser(<Prueba />)}></Route>
-        <Route path='/carrito' element={toUser(<CartHandler/>)}/>
-        <Route path="/publication-book" element={toAuthor(<PublishBook/>)}></Route>
-        <Route path="/your-books" element={toAuthor(<YourBooks/>)}></Route>
-        <Route path="/modify-book/:id" element={toAuthor(<Modifybook/>)}></Route>
+        <Route path='/carrito' element={toUser(<CartHandler />)} />
+        <Route path="/publication-book" element={toAuthor(<PublishBook />)}></Route>
+        <Route path="/your-books" element={toAuthor(<YourBooks />)}></Route>
+        <Route path="/modify-book/:id" element={toAuthor(<Modifybook />)}></Route>
       </Route>
     </Routes>
   )

@@ -84,7 +84,6 @@ export const AuthProvider = ({ children }) => {
     try {
       const decoded = jwtDecode(token);
       if (decoded.exp > Date.now() / 1000) {
-        //setPayload(decoded.userInfo)
         setAuthState(prev => ({
           ...prev,
           isLogged: true,

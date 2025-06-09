@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import ModalCustom from "../components/customModal"
+import ModalCustom from "../utils/ui/customModal"
 import Login from "../components/Login"
 import RecoveryPassword from "../components/recoveryPassword"
 

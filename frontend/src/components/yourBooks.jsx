@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import imagen from '../assets/imagen.png'
 import { API } from "../utils/backPaths";
-import Dialog from "./dialog"
+import Dialog from "../utils/ui/dialog"
 
 export default function() {
 

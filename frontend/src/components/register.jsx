@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { API } from '../utils/backPaths';
 import Message from '../utils/message';
 import validationAccount from '../utils/validationAccount';
-import { modal } from './dialog';
+import { closeDialogOnClickOutside } from '../utils/ui/dialog';
 import { useRegisterValidation } from './validationForm';
 import ValidationInput from './validationInput';
 
@@ -14,7 +14,7 @@ export default function Register({ vReg, setVreg }) {
   const [message, setMessage] = useState({ 'message': null, 'error': false })
 
   useEffect(() => {
-    modal(vReg, setVreg, divRef, false)
+    closeDialogOnClickOutside(vReg, setVreg, divRef, false)
   }, [vReg])
 
 

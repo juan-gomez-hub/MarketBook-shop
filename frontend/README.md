@@ -1,70 +1,77 @@
-# Getting Started with Create React App
+# Nerd Fonts
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is an archived font from the Nerd Fonts release v3.4.0.
 
-## Available Scripts
+For more information see:
+* https://github.com/ryanoasis/nerd-fonts/
+* https://github.com/ryanoasis/nerd-fonts/releases/latest/
 
-In the project directory, you can run:
+# Cascadia Mono
 
-### `npm start`
+**Cascadia Mono** is a fun, new monospaced font, Cascadia Code without ligatures.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+For more information have a look at the upstream website: https://github.com/microsoft/cascadia-code
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Note that upstream has a version with Nerd Font icons: CascadiaMonoNF. That has not been created with the Nerd Fonts `font-patcher`.
 
-### `npm test`
+## Preprocessed Source Font
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This source font has been preprocessed - it is not taken directly from upstream.
+Cascadia Code is mainly a variable font (VF) and the static versions (that Nerd Fonts
+are based on) are prepared in a different way: They have been hinted with `ttfautohint`.
+That hints differ considerably from the hints in the VF. That changes the rendering for
+smaller sizes (usual sizes in terminals) considerably.
 
-### `npm run build`
+To get the 'original' (i.e. VF) feel of the font we redo the hints in the static versions:
+Open the font with Microsoft's VisualTrueType (VTT) and apply Light Latin Autohint.
+The issue is known upstream and will probably be fixed. But until it is fixed we need
+to do this manual process on all source updates.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Version: 2407.24
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Why `CaskaydiaMono` and not `Cascadia Mono`?
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+What's in a name? The reason for the name change is to comply with the SIL Open Font License (OFL), in particular the [Reserved Font Name mechanism][SIL-RFN]
 
-### `npm run eject`
+Some fonts have parts of their name "reserved" per the [Reserved Font Name mechanism][SIL-RFN]:
+> No Modified Version of the Font Software may use the Reserved Font
+> Name(s) unless explicit written permission is granted by the corresponding
+> Copyright Holder. This restriction only applies to the primary font name as
+> presented to the users.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- The main goals seem to be to: `Avoid collisions`, `Protect authors`, `Minimize support`, and `Encourage derivatives`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+See the [Reserved Font Name section][SIL-RFN] for additional information
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Which font?
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### TL;DR
 
-## Learn More
+* Pick your font family:
+  * If you are limited to monospaced fonts (because of your terminal, etc) then pick a font with `Nerd Font Mono` (or `NFM`).
+  * If you want to have bigger icons (usually around 1.5 normal letters wide) pick a font without `Mono` i.e. `Nerd Font` (or `NF`). Most terminals support this, but ymmv.
+  * If you work in a proportional context (GUI elements or edit a presentation etc) pick a font with `Nerd Font Propo` (or `NFP`).
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Ligatures
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Ligatures are generally preserved in the patched fonts.
+Nerd Fonts `v2.0.0` had no ligatures in the `Nerd Font Mono` fonts, this has been dropped with `v2.1.0`.
+If you have a ligature-aware terminal and don't want ligatures you can (usually) disable them in the terminal settings.
 
-### Code Splitting
+### Explanation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Once you narrow down your font choice of family (`Droid Sans`, `Inconsolata`, etc) and style (`bold`, `italic`, etc) you have 2 main choices:
 
-### Analyzing the Bundle Size
+#### `Option 1: Download already patched font`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+ * For a stable version download a font package from the [release page](https://github.com/ryanoasis/nerd-fonts/releases)
+ * Direct links for [CascadiaMono.zip](https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CascadiaMono.zip) or [CascadiaMono.tar.xz](https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CascadiaMono.tar.xz)
 
-### Making a Progressive Web App
+#### `Option 2: Patch your own font`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+ * Patch your own variations with the various options provided by the font patcher (i.e. not include all symbols for smaller font size)
 
-### Advanced Configuration
+For more information see: [The FAQ](https://github.com/ryanoasis/nerd-fonts/wiki/FAQ-and-Troubleshooting#which-font)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+[SIL-RFN]:http://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web_fonts_and_RFNs#14cbfd4a
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

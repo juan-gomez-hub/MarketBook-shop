@@ -95,6 +95,7 @@ class Book(db.Model):
 
     def to_dict_public(self):
         return {
+            "author":self.author.name,
             "reference": self.uuid,
             "title": self.title,
             "description": self.description,
