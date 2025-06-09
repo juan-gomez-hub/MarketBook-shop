@@ -2,8 +2,8 @@
 
 ```bash
 # Clona el repositorio
-git clone https://github.com/usuario/proyecto.git
-cd proyecto
+git clone https://github.com/juan-gomez-hub/MarketBook-shop.git
+cd MarketBook-shop
 ```
 
 ### 🚀 Ejecutar backend
