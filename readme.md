@@ -21,5 +21,7 @@ flask run --reload
 ```
 
 ### 🚀 Ejecutar frontend
+```bash
 cd frontend
 npm start
+```
