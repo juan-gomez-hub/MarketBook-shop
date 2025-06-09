@@ -9,7 +9,7 @@ def test_create_book(client):
     book = data.book
     count=0
     for i in range(0,5):
-        tokenAuthor = makeme_author(client,None)
+        tokenAuthor = makeme_author(client,f"example{i}")
         assert tokenAuthor is not None, "El login fallo"
         for n in range(0,15):
             for libro in book:

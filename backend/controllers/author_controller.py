@@ -36,7 +36,7 @@ async def makemeauthor(user):
         json = request.get_json()
         roleToChange = 1
         if user["role"] == roleToChange:
-            return {"Error": "You are logged"}
+            return {"Error": "You are logged"},400
         required = ["name", "biography"]
         try:
             validationJsonAuthor(data=json, required_keys=required)
@@ -50,8 +50,11 @@ async def makemeauthor(user):
         if "image" in json:
             image = json["image"]
             if not Images.verifyIfExistImage(image):
-                return {"Error": "La imagen ingresada no existe en el sistema"}
-        Authors.create_author(name, biography, account_id, image)
+                return {"Error": "La imagen ingresada no existe en el sistema"},404
+        try:
+            Authors.create_author(name, biography, account_id, image)
+        except ValueError as e:
+                return {"error":str(e)},400
         User.changeRole(account_id, roleToChange)
         token = createToken({"userID": user["id"], "role": roleToChange}, SECRET_KEY)
         if request.headers.get("Authorization"):

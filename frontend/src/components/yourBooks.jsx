@@ -13,7 +13,7 @@ export default function() {
   const [visibility, setVisibility] = useState(false)
 
   useEffect(() => {
-    fetch(`${API}/market/list/your-books`, {method:"POST", headers: { Authorization: localStorage.getItem("jwt") } })
+    fetch(`${API}/market/list/your-books`, { method: "POST", headers: { Authorization: localStorage.getItem("jwt") } })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -50,31 +50,40 @@ export default function() {
     <div class="w-full">
       <Dialog selectedCard={selectedCard} visibility={visibility} setVisibility={setVisibility} ref={esteDiv} />
       <div class="w-full grid gap-6 grid-cols-[repeat(auto-fill,minmax(220px,1fr))] text-center break-words">
-        {books.length > 0 ? (
-          books.map((book, index) => (
-            <div key={book.reference} class="flex flex-col mt-[24px]  transition delay-150 duration-700 ease-in-out " style={{ border: "1px solid #E0E0E0" }}>
-              <div class="m-4 ">
-                <div>
-                  <img src={book.cover_image ? book.cover_image : imagen} onClick={() => {
-                    setSelectedCard(book);
-                  }} class="hover:cursor-pointer m-auto h-[200px] hover:shadow-lg shadow-gray-500/50 select-none"></img>
+        {books.map((book) => (
+          <div
+            key={book.reference}
+            className="flex flex-col mt-[24px] transition delay-100 duration-150 ease-in-out bg-white shadow-md shadow-gray-200 hover:shadow-gray-300 hover:cursor-pointer rounded-md shadow-md"
+            style={{ border: "1px solid #E0E0E0" }}
+            onClick={()=>setSelectedCard(book)}
+          >
+            <div className="m-2 h-full">
+              <div>
+                <img
+                  src={book.cover_image ? book.cover_image : imagen}
+                  className="hover:cursor-pointer m-auto h-[200px] hover:shadow-lg shadow-gray-500/50 select-none"
+                />
+              </div>
+              <div className="flex flex-col mt-[14px] mt-auto">
+                <div
+                  className="hover:cursor-pointer text-base overflow-hidden -webkit-line-clamp-2 font-semibold"
+                  style={{
+                    WebkitLineClamp: 2,
+                    display: "-webkit-box",
+                    WebkitBoxOrient: "vertical",
+                  }}
+                >
+                  {book.title}
                 </div>
-                <div class="flex flex-col mt-[14px] mt-auto ">
-                  <div onClick={() => {
-                    //select(book); toggleDiv();
-                  }} class="hover:cursor-pointer text-base overflow-hidden -webkit-line-clamp-2" style={{ WebkitLineClamp: 2, display: '-webkit-box', WebkitBoxOrient: 'vertical' }}>{book.title}</div>
-
-                  <h3 class=" overflow-hidden ">{book.author}</h3>
-
-                  <h3 class="break-words  ">{book.release_date}</h3>
-                  <h1>{book.price}</h1>
-                </div>
+                <h3 className="overflow-hidden text-blue-800">{book.author}</h3>
+                <p className="text-lg font-medium content-center flex-1">
+                  <span className="text-sm">$</span>
+                  {book.price}
+                </p>
               </div>
             </div>
-          ))
-        ) : (
-          <p>No books available</p>
-        )}
+          </div>
+        ))}
       </div>
     </div>
   )

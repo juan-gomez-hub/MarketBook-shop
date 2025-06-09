@@ -12,6 +12,7 @@ from typing import Optional
 from sqlalchemy import Integer, Column, String, Float, ForeignKey, DateTime, Text
 from datetime import datetime
 from flask import current_app, request
+from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.datastructures import auth
 from werkzeug.utils import secure_filename
 from collections import Counter
@@ -210,7 +211,7 @@ class Book(db.Model):
 class Authors(db.Model):
     __tablename__ = "MS_AUTHOR"
     _id = Column(Integer(), primary_key=True, unique=True, autoincrement=True)
-    name = Column(String(16), nullable=False)
+    name = Column(String(16), nullable=False,unique=True)
     biography = Column(String(60), nullable=False)
     image = Column(String(42), ForeignKey("MS_IMAGES.filename"), nullable=True)
     # birth_date = Column(DateTime(), nullable=False, unique=False)
@@ -239,6 +240,9 @@ class Authors(db.Model):
 
     @classmethod
     def create_author(cls, name, biography, account_id, image=None):
+        nameInDB=cls.query.filter(cls.name==name).first()
+        if nameInDB:
+            raise ValueError(f"El nombre ingresado corresponde a una cuenta existente")
         if image is not None:
             author = cls(
                 name=name, biography=biography, account_id=account_id, image=image
