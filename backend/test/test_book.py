@@ -4,7 +4,6 @@ from test import data
 from test.helpers.image_helpers import upload_image
 from test.test_author import makeme_author
 
-
 def test_create_book(client):
     book = data.book
     count=0
