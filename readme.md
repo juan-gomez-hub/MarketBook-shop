@@ -4,7 +4,7 @@
 # Clona el repositorio
 git clone https://github.com/usuario/proyecto.git
 cd proyecto
-
+```
 
 ## 🚀 Ejecutar backend
 
