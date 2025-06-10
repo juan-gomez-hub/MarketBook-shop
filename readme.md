@@ -19,6 +19,11 @@ source backend/env/bin/activate
 cp .env.example .env
 flask run --reload
 ```
+### Ejecutar test en backend (carga 30 paginas)
+
+```bash
+pytest -s test/
+```
 
 ### 🚀 Ejecutar frontend
 ```bash
