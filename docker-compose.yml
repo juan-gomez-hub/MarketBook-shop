@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 195418
+      MYSQL_DATABASE: market
+    healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p195418"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+  backend:
+     build: ./backend
+     container_name: flask_app
+     volumes:
+       - ./backend:/app
+     ports:
+       - "5000:5000"
+     environment:
+      FLASK_ENV: development
+      URI_DB: mysql://root:195418@db:3306/market
+      URI_DB_TESTING: mysql://root:195418@db:3306/market
+     depends_on:
+       - db
+
+  frontend:
+     build: ./frontend
+     container_name: react_app
+     ports:
+       - "3000:80"
+
+
+  # db:
+  #   image: mysql:5.7
+  #   platform: linux/amd64
+  #   container_name: mysql_db
+  #   restart: always
+  #   environment:
+  #     MYSQL_DATABASE: market
+  #     MYSQL_ROOT_PASSWORD: 195418
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - db_data:/var/lib/mysql
+  #     - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+volumes:
+  db_data:

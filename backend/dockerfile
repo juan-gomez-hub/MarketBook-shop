@@ -1,0 +1,33 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y \
+    gcc \
+    python3-dev \
+    libffi-dev \
+    libssl-dev \
+    build-essential \
+    default-mysql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY . .
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+
+COPY wait-for-db.sh /wait-for-db.sh
+RUN chmod +x /wait-for-db.sh
+
+# Dejamos CMD igual pero vamos a envolverlo con el script
+ENTRYPOINT ["/wait-for-db.sh"]
+
+
+ENV FLASK_APP=app
+ENV FLASK_RUN_HOST=0.0.0.0
+
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+#CMD ["gunicorn", "--log-level", "debug", "-b 0.0.0.0:5000", "app:app"]
+#CMD ["gunicorn", "--timeout", "90", "-b", "0.0.0.0:5000", "app:app"]
+#CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]

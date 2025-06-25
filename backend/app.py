@@ -26,8 +26,9 @@ def create_db(app: Flask, testing: bool):
     db.init_app(app)
     migrate.init_app(app, db)
     with app.app_context():
-        db.drop_all()
+        # db.drop_all()
         db.create_all()
+
 
 
 def create_app(testing=False):
@@ -41,7 +42,7 @@ def create_app(testing=False):
 
     # CORS(app, resources={r"/market/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
     app.config["SQLALCHEMY_DATABASE_URI"] = (
-        env("URL_DB_TESTING") if (testing) else env("URL_DB")
+        env("URI_DB_TESTING") if (testing) else env("URI_DB")
     )
     create_db(app, testing)
     # Book.listBook(5)
